@@ -29,6 +29,6 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  hello: "Hello world"
-  email_registered: "Email registered!"
+es:
+  hello: "Hola mundo!"
+  email_registered: "¡Correo ya registrado!"
