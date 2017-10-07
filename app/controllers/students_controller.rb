@@ -3,8 +3,12 @@ class StudentsController < ApplicationController
 
   # GET /students
   def index
-    @students = Student.all
-
+    query = 'first_name ILIKE ? AND last_name ILIKE ? AND email ILIKE ? AND shift ILIKE ? AND gender ILIKE ?'
+    @students = Student.where(query, '%' + params[:first_name] + '%',
+                              '%' + params[:last_name] + '%',
+                              '%' + params[:email] + '%',
+                              '%' + params[:shift] + '%',
+                              '%' + params[:gender] + '%')
     render json: @students
   end
 

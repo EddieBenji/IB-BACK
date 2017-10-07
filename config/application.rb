@@ -30,6 +30,7 @@ module IbBack
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    #i18n:
     config.i18n.default_locale = :es
   end
 end
