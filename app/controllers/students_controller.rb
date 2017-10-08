@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
                               '%' + params[:last_name] + '%',
                               '%' + params[:email] + '%',
                               '%' + params[:shift] + '%',
-                              '%' + params[:gender] + '%')
+                              '%' + params[:gender] + '%').order(:first_name, :last_name)
     render json: @students
   end
 
