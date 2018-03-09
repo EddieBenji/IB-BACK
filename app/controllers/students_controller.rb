@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: [:show, :update, :destroy]
+  before_action :set_student, only: %i[show update destroy]
 
   # GET /students
   def index
@@ -20,7 +20,7 @@ class StudentsController < ApplicationController
   # POST /students
   def create
     @student = Student.new(student_params)
-    if @student.is_email_registered
+    if @student.email_registered?
       render_error_payload(:email_registered, status: :forbidden)
       return
     end
@@ -33,14 +33,13 @@ class StudentsController < ApplicationController
 
   # PATCH/PUT /students/1
   def update
-    if @student.verify_does_exists_email(params[:student][:email])
+    response = @student.student_updated_correctly?(student_params)
+    if response[:email] == 'invalid'
       render_error_payload(:email_registered, status: :forbidden)
-      return
-    end
-    if @student.update!(student_params)
-      render json: @student
-    else
+    elsif response[:email] == 'valid' && response[:updated] == false
       render json: @student.errors, status: :unprocessable_entity
+    else
+      render json: @student
     end
   end
 
@@ -64,6 +63,13 @@ class StudentsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def student_params
-    params.require(:student).permit(:first_name, :last_name, :age, :gender, :shift, :email)
+    params.require(:student).permit(
+      :first_name,
+      :last_name,
+      :age,
+      :gender,
+      :shift,
+      :email
+    )
   end
 end
