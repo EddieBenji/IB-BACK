@@ -21,12 +21,9 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new(student_params)
     if @student.is_email_registered
-      render json: {
-          statusText: I18n.t('custom_errors.email_registered'), status: 422, message: I18n.t('custom_errors.email_registered')
-      }, status: :unprocessable_entity
+      render_error_payload(:email_registered, status: :forbidden)
       return
     end
-    # validations:
     if @student.save!
       render json: @student, status: :created, location: @student
     else
@@ -37,9 +34,7 @@ class StudentsController < ApplicationController
   # PATCH/PUT /students/1
   def update
     if @student.verify_does_exists_email(params[:student][:email])
-      render json: {
-          statusText: I18n.t('custom_errors.email_registered'), status: 422, message: I18n.t('custom_errors.email_registered')
-      }, status: :unprocessable_entity
+      render_error_payload(:email_registered, status: :forbidden)
       return
     end
     if @student.update!(student_params)
@@ -54,7 +49,14 @@ class StudentsController < ApplicationController
     @student.destroy
   end
 
+  protected
+
+  def render_error_payload(identifier, status: :bad_request)
+    render json: ErrorPayload.new(identifier, status), status: status
+  end
+
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_student
     @student = Student.find(params[:id])
