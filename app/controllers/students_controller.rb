@@ -25,7 +25,7 @@ class StudentsController < ApplicationController
       return
     end
     if @student.save!
-      render json: @student, status: :created, location: @student
+      render_success_payload('entity_male_added', :created, @student, 'Alumno')
     else
       render json: @student.errors, status: :unprocessable_entity
     end
@@ -39,19 +39,14 @@ class StudentsController < ApplicationController
     elsif response[:email] == 'valid' && response[:updated] == false
       render json: @student.errors, status: :unprocessable_entity
     else
-      render json: @student
+      render_success_payload('entity_male_updated', :updated, @student, 'Alumno')
     end
   end
 
   # DELETE /students/1
   def destroy
     @student.destroy
-  end
-
-  protected
-
-  def render_error_payload(identifier, status: :bad_request)
-    render json: ErrorPayload.new(identifier, status), status: status
+    render_success_payload('entity_male_deleted', 200, nil, 'Alumno')
   end
 
   private

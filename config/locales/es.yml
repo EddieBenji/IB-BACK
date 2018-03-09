@@ -33,6 +33,10 @@ es:
   hello: "Hola mundo!"
   custom_errors:
     email_registered: "El correo ya se encuentra registrado. Por favor, utiliza otro."
+  success_messages:
+    entity_male_added: "%{entity} agregado con éxito"
+    entity_male_updated: "%{entity} editado con éxito"
+    entity_male_deleted: "%{entity} eliminado con éxito"
   activerecord:
     errors:
       messages:
