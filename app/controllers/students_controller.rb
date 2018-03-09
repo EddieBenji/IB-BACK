@@ -20,11 +20,13 @@ class StudentsController < ApplicationController
   # POST /students
   def create
     @student = Student.new(student_params)
-    # validations:
     if @student.is_email_registered
-      render json: {status: 'Error', code: 422, message: I18n.t('email_registered')}
+      render json: {
+          statusText: I18n.t('custom_errors.email_registered'), status: 422, message: I18n.t('custom_errors.email_registered')
+      }, status: :unprocessable_entity
       return
     end
+    # validations:
     if @student.save!
       render json: @student, status: :created, location: @student
     else
@@ -34,6 +36,12 @@ class StudentsController < ApplicationController
 
   # PATCH/PUT /students/1
   def update
+    if @student.verify_does_exists_email(params[:student][:email])
+      render json: {
+          statusText: I18n.t('custom_errors.email_registered'), status: 422, message: I18n.t('custom_errors.email_registered')
+      }, status: :unprocessable_entity
+      return
+    end
     if @student.update!(student_params)
       render json: @student
     else

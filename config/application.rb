@@ -32,5 +32,6 @@ module IbBack
 
     #i18n:
     config.i18n.default_locale = :es
+    config.debug_exception_response_format = :api
   end
 end
