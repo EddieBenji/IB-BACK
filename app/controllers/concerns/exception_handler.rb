@@ -35,13 +35,15 @@ module ExceptionHandler
   end
 
   # JSON response with message; Status code 401 - Unauthorized
-  def four_ninety_eight(e)
-    render json: { message: e.message }, status: :invalid_token
+  def four_ninety_eight(_e)
+    render json: {
+      message: 'El token ha expirado. Por favor, inicie sesión de nuevo.'
+    }, status: :unauthorized
   end
 
   # JSON response with message; Status code 401 - Unauthorized
   def four_zero_one(e)
-    render json: { message: 'Invalid token: ' + e.message }, status: :invalid_token
+    render json: { message: 'Invalid token: ' + e.message }, status: :unauthorized
   end
 
   # JSON response with message; Status code 401 - Unauthorized

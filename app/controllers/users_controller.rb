@@ -2,6 +2,13 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: %i[login register]
 
+  # GET /test
+  def test
+    render json: {
+      message: 'You have passed authentication and authorization test'
+    }
+  end
+
   # POST /auth/login
   def login
     authenticate params[:email], params[:password]
@@ -33,8 +40,8 @@ class UsersController < ApplicationController
 
     if command.success?
       render json: {
-          access_token: command.result,
-          message: 'Login Successful'
+        access_token: command.result,
+        message: 'Login Successful'
       }
     else
       render json: { error: 'Token is invalid!' }, status: :unauthorized
