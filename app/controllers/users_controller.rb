@@ -5,8 +5,8 @@ class UsersController < ApplicationController
   # GET /test
   def test
     render json: {
-      message: 'You have passed authentication and authorization test'
-    }
+      message: 'Estás autenticado'
+    }, status: 202
   end
 
   # POST /auth/login
@@ -41,10 +41,13 @@ class UsersController < ApplicationController
     if command.success?
       render json: {
         access_token: command.result,
-        message: 'Login Successful'
+        message: 'Haz iniciado sesión correctamente.'
       }
     else
-      render json: { error: 'Token is invalid!' }, status: :unauthorized
+      render json: {
+        message: 'El correo y/o contraseña no concuerdan.',
+        status: 400
+      }, status: 400
     end
   end
 end
